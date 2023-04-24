@@ -1,0 +1,6 @@
+include syngen/data/basic_behavior.yaml
+include syngen/data/chain_active.yaml
+include syngen/data/example.yaml
+include syngen/data/chain_inactive.yaml
+include syngen/data/chain_churned.yaml
+include syngen/data/complex_behavior.yaml

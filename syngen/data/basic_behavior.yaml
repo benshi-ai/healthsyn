@@ -1,0 +1,53 @@
+# Definition of behaviors and applicable nudges (see behavior.MarkovBehavior)
+
+# Behavioral archetypes correspond to chains that represent the basic behavior
+#  patterns.
+# Nudges are essentially control signals that affect the latent stochastic
+#  dynamics of the chain by blending archetypal behaviors. Each nudge has a
+#  set of tags, each describing a __effect__ on the behavior blend. A nudge
+#  may have several tags, which means that the corresponding effects are added
+#  together.
+# Each effect is a so called __propensity direction__ vector, that determines
+#  which behavioral archetypes are most affected and by how much. When applied
+#  this vector shifts the current blend in the direction of the corresponding
+#  direction, __respecting__ the geometry of the probability simplex:
+#    new_blend = softmax(direction + log(old_blend)) .
+# Since the blending weights __must sum to one__, this means that any change
+#  affects the weights of all behavioral archetypes, even those that were not
+#  specified.
+
+# Archetypes are a mapping from names into YAML chain definitions. Each definition
+#  is specified either through an absolute path to YAML, or as a filename without
+#  extension, that is looked up inside the syngen repo's data sub-module.
+archetypes:
+  inactive: chain_inactive
+  active: chain_active
+  churned: chain_churned
+
+# The propensity direction vector for each tag is specified via a mapping from
+#  archetype name into an arbitrary numeric value (omitted values implicitly
+#  default to __zero__)! Direction vectors without implicit zeros are __SHIFT
+#  INVARIANT__, which means that their effect on each behavior component in the
+#  blend is determined ONLY by the deviation from the average value across the
+#  entire vector. The larger the deviation the stronger the effect on the blend's
+#  component. The sign of the deviation determines whether the effect reinforces
+#  a behavior (+ve), or inhibit it (-ve).
+effects:
+  fully_specified_unused_fx:
+    inactive: +10
+    active: +9
+    churned: +2
+
+  annoying:
+    inactive: +1
+    active: -1
+    # churned: 0.0  # omitted values are assumed to be ZERO
+
+  engaging:
+    active: +10
+
+  mild:
+    active: +1
+
+  damaging:
+    churned: +2

@@ -1,0 +1,24 @@
+# chain definition for an active behavior
+
+hold:
+  page_view: 300
+  session_start: 10
+  __idle: 14400
+
+
+jump:
+  page_view:
+    page_view: 0.5
+    session_end: 0.5
+
+  session_end:
+    __idle: 1.0
+
+  __idle:
+    session_start: 1.0
+
+  session_start:
+    page_view: 0.99
+    session_end: 0.01
+
+init: __idle

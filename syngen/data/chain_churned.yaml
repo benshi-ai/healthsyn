@@ -1,0 +1,9 @@
+hold:
+  __idle: 864000
+
+
+jump:
+  __idle:
+    __idle: 1.0
+
+init: __idle

@@ -1,0 +1,22 @@
+hold:
+  page_view: 150
+  session_start: 10
+  __idle: 86400
+
+
+jump:
+  page_view:
+    page_view: 0.2
+    session_end: 0.8
+
+  session_start:
+    page_view: 0.99
+    session_end: 0.01
+
+  session_end:
+    __idle: 1.0
+
+  __idle:
+    session_start: 1.0
+
+init: __idle

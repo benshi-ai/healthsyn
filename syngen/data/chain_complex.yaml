@@ -1,0 +1,55 @@
+# re-entrant Time Continuous Markov Chain spec in YAML format
+
+# omitted states default to zero average holding time, which means that
+#  transitions away from such states happen immediately upon entering them
+hold:
+  page_view__1: 300
+  session_start__1: 10
+  __idle: 14400
+  page_view__2: 150
+  session_start__2: 10
+  __y1: 86400
+  __y2: 864000
+
+# transition probability matrix is a mapping of partial mappings:
+#   origin -> (target -> probability)
+# -- jumping from the origin state to the target state label
+# the outer mapping specifies __ALL__ state labels in the chain, while
+# the probabilities of omitted keys in the inner mapping default to ZERO.
+# XXX if a state label is not specified in the outer dict, then it does not exist
+jump:
+  page_view__1:
+    page_view__1: 0.5
+    session_end__1: 0.5
+
+  session_end__1:
+    __idle: 0.98
+    __y1: 0.02
+
+  __idle:
+    session_start__1: 1.0
+
+  session_start__1:
+    page_view__1: 0.99
+    session_end__1: 0.01
+
+  __y1:
+    session_start__2: 1.0
+
+  session_start__2:
+    page_view__2: 0.99
+    session_end__2: 0.01
+
+  page_view__2:
+    page_view__2: 0.2
+    session_end__2: 0.8
+
+  session_end__2:
+    __y1: 0.9
+    __y2: 0.1
+
+  __y2:
+    session_start__2: 0.6
+    session_start__1: 0.4
+
+init: __idle
